@@ -31,16 +31,51 @@ class Dashboard extends CI_Controller
 		$this->loadViews("login");
 	}
 
+	public function misTareas()
+	{
+
+		if ($_SESSION["id"]) {
+			$data['tareas'] = $this->Site_model->getTareas($_SESSION['curso']);
+			$this->loadViews("misTareas", $data);
+		} else {
+			redirect(base_url() . "DashBoard", "location");
+		}
+
+	}
+
+	public function mensajes()
+	{
+		if ($_SESSION["id"]) {
+			$token = $this->Site_model->getToken($_SESSION['id'], $_SESSION['tipo']);
+			//INSERTAR MENSAJE
+			if ($_POST) {
+				$this->Site_model->insertMensaje($_POST, $token);
+			}
+
+			//OBTENER TODOS LOS USUARIOS
+			$data['usuarios'] = $this->Site_model->getUsuarios($_SESSION['tipo'], $_SESSION['curso']);
+			$data['mensajes'] = $this->Site_model->getMensajes($token);
+			$this->loadViews("mensajes", $data);
+		} else {
+			redirect(base_url() . "DashBoard", "location");
+		}
+	}
+
+	public function getMensaje() {
+		$texto = $this->Site_model->getTextMensaje($_POST["idmensaje"]);
+		echo $texto[0]->texto;
+	}
+
 	public function crearTareas()
 	{
 
-		if ($_POST) {
+		if (!empty($_FILES["archivo"]["name"])) {
 			$config['upload_path'] = './uploads/';
 			$config['allowed_types'] = 'gif|jpg|png';
 			//$config['max_size'] = 100;
 			//$config['max_width'] = 1024;
 			//$config['max_height'] = 768;
-			$config['file_name'] = uniqid().$_FILES['archivo']['name'];
+			$config['file_name'] = uniqid() . $_FILES['archivo']['name'];
 
 			$this->load->library('upload', $config);
 
@@ -49,6 +84,8 @@ class Dashboard extends CI_Controller
 			} else {
 				$this->Site_model->uploadTarea($_POST, $config['file_name']);
 			}
+		} else {
+			$this->Site_model->uploadTarea($_POST);
 		}
 
 		$this->loadViews("crearTareas");

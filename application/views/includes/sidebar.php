@@ -40,13 +40,13 @@
                   }
                   ?>
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a href="<?php echo base_url() ?>Dashboard/misTareas" >
                           <i class="fa fa-book"></i>
                           <span>Mis Tareas</span>
                       </a>
                   </li>
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a href="<?php echo base_url() ?>Dashboard/mensajes" >
                           <i class="fa fa-tasks"></i>
                           <span>Mensajes</span>
                       </a>

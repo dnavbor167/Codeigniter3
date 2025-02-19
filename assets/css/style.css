@@ -2240,4 +2240,14 @@ label {
     min-height: 900px;
 }
 
+.tarea {
+    background: white;
+    padding: 25px;
+    text-align: center;
+}
 
+#btnMensaje {
+    margin: 30px 30px;
+    background: #ffd777;
+    border: solid 1px #ffd777;
+} 
